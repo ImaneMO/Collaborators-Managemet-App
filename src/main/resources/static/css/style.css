@@ -1,0 +1,79 @@
+body{
+	margin: 0!important;
+	border: 0!important;
+}
+
+.control-label{	
+	color: #093F4F!important;
+	font-size: 15px;
+	font-weight: 5px;
+}
+
+h2{
+	color: #093F4F!important;
+	text-shadow: #ccccb3;
+	border-color: white;
+}
+
+.bg-light{
+	background-color: white!important;
+}
+
+.nav-link{
+	color: #FFFFFF!important;
+}
+
+ul{
+	display: inline-flex!important;
+}
+
+.fieldset-form{
+	display: grid!important;
+  	grid-template-columns: 1fr 1fr 1fr;
+  	background-color: #91090B15;
+  	padding: 1em;
+  	box-shadow: 5px 5px 10px;
+}
+
+#contact-form{
+	
+}
+
+@media screen and (max-width: 1100px and (min-width: 740px){
+	header, .container-fluid, .navbar-nav-scroll, form {
+		width: 100%;
+		overflow: hidden;
+	}
+	body{
+		display: block;
+	}
+}
+
+html{
+	--myBleu:#093F4F;
+	--myRed:#91090B;
+	--myBackground:#91090B15;
+}
+nav.navbar{
+	background-color: var(--myBleu)!important;
+	padding-left: 0;
+}
+.navbar-brand{
+	margin-left: 30px!important;
+}
+ul.mr-auto{
+	margin-left: auto;
+	margin-right: 15px!important;
+}
+.btn-outline-search {
+  color: yellow;
+  border-color: yellow;
+}
+.btn-outline-search:hover {
+	color: #FFF;
+	background-color: var(--myRed);
+	border-color: var(--myRed);
+}
+
+#success_message{ display: none;}
+
