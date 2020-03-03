@@ -57,10 +57,10 @@ public class CollaboratorServiceImpl implements CollaboratorService {
         } 
         return new Collaborator(optionalCollaborator.get().getFirstName(), 
         		optionalCollaborator.get().getLastName(), 
-        		optionalCollaborator.get().getEmail(), 
-        		optionalCollaborator.get().getphoneNumber(), 
+        		optionalCollaborator.get().getCivility(), 
         		optionalCollaborator.get().getDateOfBirth(), 
-        		optionalCollaborator.get().getCivility());
+        		optionalCollaborator.get().getEmail(),
+        		optionalCollaborator.get().getphone_number());
 	}
 	
 

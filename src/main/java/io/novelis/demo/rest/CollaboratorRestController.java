@@ -85,7 +85,7 @@ public class CollaboratorRestController {
 		
 		@ApiOperation(value = "Create a collaborator on the condition that he doesn't already exist!")
 		@PostMapping("/collaborators")
-		public ResponseEntity<AppResponse> AddCollaborator(@RequestBody @Valid Collaborator collaborator) throws Exception{
+		public ResponseEntity<AppResponse> AddCollaborator(@Valid Collaborator collaborator) throws Exception{
 			collaborator.setId(0);
 			return new ResponseEntity<>(new CollaboratorDetailsResponse(collaboratorRepository.save(collaborator), 
 					"Collaborator created successfully"), HttpStatus.CREATED);
@@ -100,7 +100,11 @@ public class CollaboratorRestController {
 		        	Collaborator collaborator = optionalCollaborator.get();
 		        	collaborator.setFirstName(collaboratorInput.getFirstName());
 		        	collaborator.setLastName(collaboratorInput.getLastName());
+		        	collaborator.setCivility(collaboratorInput.getCivility());
+		        	collaborator.setDateOfBirth(collaboratorInput.getDateOfBirth());
 		        	collaborator.setEmail(collaboratorInput.getEmail());
+		        	collaborator.setphone_number(collaboratorInput.getphone_number());
+
 		            return ResponseEntity.ok(new CollaboratorDetailsResponse(collaboratorRepository.save(optionalCollaborator.get()), "Collaborator updated successfully"));
 		        } else {
 		            return new ResponseEntity<>(new ErrorResponse("Collaborator does not exist"), HttpStatus.NOT_FOUND);
@@ -126,7 +130,7 @@ public class CollaboratorRestController {
 	        if (pageSize <= 0)
 	            pageSize = 2;
 
-	        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.Direction.DESC,"id");
+	        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.Direction.ASC,"id");
 	        return pageRequest;
 	    }
 		

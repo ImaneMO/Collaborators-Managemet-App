@@ -2,6 +2,7 @@ package io.novelis.demo.dto;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import io.novelis.demo.entity.Collaborator;
-
 
 public class CollaboratorDTO {
 	
@@ -22,14 +22,22 @@ public class CollaboratorDTO {
 		    regexp = "/^[a-z ,.'-]+$/i", 
 		    message = "Enter a valid name."
 		    ) 
-	private String firstName;
-	
+	private String first_name;
+
 	@NotNull(message = "Name cannot be null.")
 	@Pattern(
 		    regexp = "/^[a-z ,.'-]+$/i", 
 		    message = "Enter a valid name."
 		    ) 
-	private String lastName;
+	private String last_name;
+	
+	@NotNull()
+	@Pattern(
+		    regexp = "(^0[0-9]{8}$|^00[0-9]{11,13}$)", 
+		    message = "Enter a valid phone number."
+		    ) 
+	@Column(name="phone_number")
+	private String phone_number;
 	
 	@Email(message="Enter a valid email.")
     @NotBlank
@@ -37,7 +45,7 @@ public class CollaboratorDTO {
 	
 	@NotNull()
 	@Past(message = "Date input is invalid for a birth date.")
-	private Date dateOfBirth;
+	private Date birth_date;
 	
 	@NotNull()
 	@Size(min = 1, max = 10, message = "Civility is either M. or MM. .")
@@ -49,12 +57,15 @@ public class CollaboratorDTO {
 	
 	
 	
-	public CollaboratorDTO(String firstName, String lastName, String email, Date dateOfBirth, String civility) {
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public CollaboratorDTO(int id,String first_name, String lastName, String civility, Date dateOfBirth, String email, String phone_number) {
+		this.id=id;
+		this.first_name = first_name;
+		this.last_name = lastName;
 		this.email = email;
-		this.dateOfBirth = dateOfBirth;
+		this.birth_date = dateOfBirth;
 		this.civility = civility;
+		this.phone_number = phone_number;
+		
 	}
 
 	
@@ -67,24 +78,22 @@ public class CollaboratorDTO {
 		this.id = id;
 	}
 
-
-	public String getFirstName() {
-		return firstName;
+	public String getFirst_name() {
+		return first_name;
 	}
 
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
-
 
 	public String getLastName() {
-		return lastName;
+		return last_name;
 	}
 
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.last_name = lastName;
 	}
 
 
@@ -99,12 +108,12 @@ public class CollaboratorDTO {
 
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return birth_date;
 	}
 
 
 	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+		this.birth_date = dateOfBirth;
 	}
 
 
@@ -118,8 +127,8 @@ public class CollaboratorDTO {
 	}
 
 	public static CollaboratorDTO build(Collaborator collaborator) {
-        return new CollaboratorDTO(collaborator.getFirstName(), collaborator.getLastName(),
-        		collaborator.getEmail(), collaborator.getDateOfBirth(), collaborator.getCivility());
+        return new CollaboratorDTO(collaborator.getId(), collaborator.getFirstName(), collaborator.getLastName(), collaborator.getCivility(), collaborator.getDateOfBirth(),
+        		collaborator.getEmail(), collaborator.getphone_number());
     }
 
 }

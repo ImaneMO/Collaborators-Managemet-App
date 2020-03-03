@@ -1,110 +1,118 @@
-window.onload = () => {
+$(document).ready(function() {
 
-	const SERVER_URL = 'http://localhost:8080/collaborators/';
-	
-	$(document).ready(function() {
-    $('#contact_form').bootstrapValidator({
-        feedbackIcons: {
-            valid: 'fas fa-check',
-            invalid: 'fas fa-trash-alt',
-            validating: 'fas fa-redo'
-        },
-        fields: {
-            first_name: {
-                validators: {
-                        stringLength: {
-                        min: 2,
-                    },
-                        notEmpty: {
-                        message: 'Please enter your First Name'
-                    }
-                }
-            },
-             last_name: {
-                validators: {
-                     stringLength: {
-                        min: 2,
-                    },
-                    notEmpty: {
-                        message: 'Please enter your Last Name'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please enter your Email Address'
-                    },
-                    emailAddress: {
-                        message: 'Please enter a valid Email Address'
-                    }
-                }
-            },
-            contact_no: {
-                validators: {
-                  stringLength: {
-                        min: 12, 
-                        max: 12,
-                    notEmpty: {
-                        message: 'Please enter your Contact No.'
-                     }
-                }
-            },
-			 department: {
-                validators: {
-                    notEmpty: {
-                        message: 'Please select your Civility'
-                    }
-                }
-            },
-                }
-            }
-        })
-        .on('success.form.bv', function(e) {
-            $('#success_message').slideDown({ opacity: "show" }, "slow") // Do something ...
-                $('#contact_form').data('bootstrapValidator').resetForm();
+  function ajaxCallRequest(f_method, f_url, f_data) {
+    $("#dataSent").val(unescape(f_data));
+    var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    $.ajax({
+      url: f_url,
+      type: f_method,
+      contentType: f_contentType,
+      dataType: 'json',
+      data: f_data,
+      success: function(data) {
+        var jsonResult = JSON.stringify(data);
+        $("#results").val(unescape(jsonResult));
+      }
+    });
+  }
 
-            // Prevent form submission
-            e.preventDefault();
 
-            // Get the form instance
-            var $form = $(e.target);
+  var formResults = JSON.stringify({
+   first_name = document.querySelector("#first_name"),
+   last_name = document.querySelector("#last_name"),
+   civility = document.querySelector("#civility"),
+   email = document.querySelector("#email"),
+   phone_number = document.querySelector("#phone_number")
+  });
 
-            // Get the BootstrapValidator instance
-            var bv = $form.data('bootstrapValidator');
 
-            // Use Ajax to submit form data
-            $.post($form.attr('action'), $form.serialize(), function(result) {
-                console.log(result);
-            }, 'json');
-        });
-});
+$("#sendSerialized").click(function(event) {
+    event.preventDefault();
+    var form = $('#contact_form');
+    var method = form.attr('method');
+    var url = form.attr('action')/* + 'serialized/'*/;
+    var objectData = $(form).serializeObject();
+    var data = JSON.stringify(objectData);
+    
+    console.log(data);
+    ajaxCallRequest(method, url, data);
+  });
+  $.mockjax({
+    url: 'http://localhost:8080/api/collaborators/',
+    type: 'POST',
+    contentType: 'application/x-www-form-urlencoded',
+    responseTime: 0,
+    response: function(settings) {
+      var data = settings.data;
+      this.responseText = data;
+    }
+  });
 
-function includeHTML() {
-  var z, i, elmnt, file, xhttp;
-  /* Loop through a collection of all HTML elements: */
-  z = document.getElementsByTagName("*");
-  for (i = 0; i < z.length; i++) {
-    elmnt = z[i];
-    /*search for elements with a certain attribute:*/
-    file = elmnt.getAttribute("w3-include-html");
-    if (file) {
-      /* Make an HTTP request using the attribute value as the file name: */
-      xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-          /* Remove the attribute, and call this function once more: */
-          elmnt.removeAttribute("w3-include-html");
-          includeHTML();
+
+   //form serializer
+(function($) {
+  $.fn.serializeObject = function() {
+
+    var self = this,
+      json = {},
+      push_counters = {},
+      patterns = {
+        "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+        "key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+        "push": /^$/,
+        "fixed": /^\d+$/,
+        "named": /^[a-zA-Z0-9_]+$/
+      };
+      
+    this.pair = function(base, key, value) {
+      base[key] = value;
+      return base;
+    };
+
+    this.push_counter = function(key) {
+      if (push_counters[key] === undefined) {
+        push_counters[key] = 0;
+      }
+      return push_counters[key]++;
+    };
+
+    $.each($(this).serializeArray(), function(index, item) {
+
+      // skip invalid keys
+      var name = item.name;
+      if (!patterns.validate.test(name)) {
+        return;
+      }
+
+      var key;
+      var keys = name.match(patterns.key);
+      var value = item.value;
+      var reverse_key = name;
+
+      while ((key = keys.pop()) !== undefined) {
+
+        // adjust reverse_key
+        reverse_key = reverse_key.replace(new RegExp("\\[" + key + "\\]$"), '');
+
+        // push
+        if (key.match(patterns.push)) {
+          value = self.pair([], self.push_counter(reverse_key), value);
+        }
+
+        // fixed
+        else if (key.match(patterns.fixed)) {
+          value = self.pair([], key, value);
+        }
+
+        // named
+        else if (key.match(patterns.named)) {
+          value = self.pair({}, key, value);
         }
       }
-      xhttp.open("GET", file, true);
-      xhttp.send();
-      /* Exit the function: */
-      return;
-    }
-  }
-}
-};
+
+      json = $.extend(true, json, value);
+    });
+
+    return json;
+  };
+})(jQuery);

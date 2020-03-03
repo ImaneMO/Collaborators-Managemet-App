@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 
 @Entity
@@ -23,27 +21,21 @@ public class Collaborator implements Serializable{
 	private int id;
 	
 	@Column(name="first_name")
-	private String firstName;
+	private String first_name;
 	
 	
 	@Column(name="last_name") 
-	private String lastName;
+	private String last_name;
 	
 	
 	@Column(name="email")
 	private String email;
 	
-	@NotNull()
-	@Pattern(
-		    regexp = "(\\+212|0)([ \\-_/]*)(\\d[ \\-_/]*){9}", 
-		    message = "Enter a valid phone number."
-		    ) 
 	@Column(name="phone_number")
-	private String phoneNumber;
-	
-	 
+	private String phone_number;
+
 	@Column(name="birth_date")
-	private Date dateOfBirth;
+	private Date birth_date;
 	
 	
 	@Column(name="civility")
@@ -56,14 +48,13 @@ public class Collaborator implements Serializable{
 
 	
 
-	public Collaborator(String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth,
-			String civility) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.dateOfBirth = dateOfBirth;
+	public Collaborator(String first_name, String lastName, String civility, Date dateOfBirth, String email, String phoneNumber) {
+		this.first_name = first_name;
+		this.last_name = lastName;
 		this.civility = civility;
+		this.birth_date = dateOfBirth;
+		this.email = email;
+		this.phone_number = phoneNumber;
 	}
 
 	public int getId() {
@@ -77,27 +68,25 @@ public class Collaborator implements Serializable{
 	}
 
 
-
 	public String getFirstName() {
-		return firstName;
+		return first_name;
 	}
 
 
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String first_name) {
+		this.first_name = first_name;
 	}
-
 
 
 	public String getLastName() {
-		return lastName;
+		return last_name;
 	}
 
 
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.last_name = lastName;
 	}
 
 
@@ -114,26 +103,26 @@ public class Collaborator implements Serializable{
 
 
 
-	public String getphoneNumber() {
-		return phoneNumber;
+	public String getphone_number() {
+		return phone_number;
 	}
 
 
 
-	public void setphoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setphone_number(String phoneNumber) {
+		this.phone_number = phoneNumber;
 	}
 
 
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return birth_date;
 	}
 
 
 
 	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+		this.birth_date = dateOfBirth;
 	}
 
 

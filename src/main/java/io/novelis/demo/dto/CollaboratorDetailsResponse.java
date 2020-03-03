@@ -6,27 +6,38 @@ import io.novelis.demo.entity.Collaborator;
 public class CollaboratorDetailsResponse extends SuccessResponse{
 	
 	private int id;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private Date dateOfBirth;
+	private String first_name;
+	private String last_name;
 	private String civility;
+	private Date birth_date;
+	private String email;
+	private String phone_number;
 	
-	public CollaboratorDetailsResponse(int id, String firstName, String lastName, String email,
-			Date dateOfBirth, String civility) {
+	public CollaboratorDetailsResponse(int id, String first_name, String lastName, String civility, Date birth_date, String email, String phone_number) {
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.dateOfBirth = dateOfBirth;
+		this.first_name = first_name;
+		this.last_name = lastName;
 		this.civility = civility;
+		this.birth_date = birth_date;
+		this.email = email;
+		this.phone_number = phone_number;
+		
 	}
 
 	public CollaboratorDetailsResponse(Collaborator collaborator, String message) {
-        this(collaborator.getId(), collaborator.getFirstName(), collaborator.getLastName(), collaborator.getEmail(), collaborator.getDateOfBirth(), collaborator.getCivility());
+        this(collaborator.getId(), collaborator.getFirstName(), collaborator.getLastName(), collaborator.getCivility(), collaborator.getDateOfBirth(), collaborator.getEmail(), collaborator.getphone_number());
         addFullMessage(message);
     }
 
+	public String getPhone_number() {
+		return phone_number;
+	}
+
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
+	}
+
+	
     public CollaboratorDetailsResponse(Collaborator collaborator) {
         this(collaborator, null);
     }
@@ -42,19 +53,19 @@ public class CollaboratorDetailsResponse extends SuccessResponse{
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return first_name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstName(String first_name) {
+		this.first_name = first_name;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return last_name;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.last_name = lastName;
 	}
 
 	public String getEmail() {
@@ -66,11 +77,11 @@ public class CollaboratorDetailsResponse extends SuccessResponse{
 	}
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return birth_date;
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+		this.birth_date = dateOfBirth;
 	}
 
 	public String getCivility() {
