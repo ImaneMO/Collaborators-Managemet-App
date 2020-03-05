@@ -38,9 +38,8 @@ $("#sendSerialized").click(function(event) {
     ajaxCallRequest(method, url, data);
   });
   $.mockjax({
-    url: 'http://localhost:8080/api/collaborators/',
-/*    type: 'POST',
-*/    type: 'PUT',
+    url: 'http://localhost:8080/api/Collaborators/',
+    type: 'POST',
     contentType: 'application/x-www-form-urlencoded',
     responseTime: 0,
     response: function(settings) {
